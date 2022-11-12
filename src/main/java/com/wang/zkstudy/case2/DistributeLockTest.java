@@ -12,6 +12,7 @@ public class DistributeLockTest {
     public static void main(String[] args) {
         DistributeLock distributeLock = new DistributeLock();
         DistributeLock distributeLock2 = new DistributeLock();
+        DistributeLock distributeLock3 = new DistributeLock();
 
         new Thread(new Runnable() {
             @SneakyThrows
@@ -20,7 +21,7 @@ public class DistributeLockTest {
                 distributeLock.init();
                 distributeLock.zkLock();
                 System.out.println("线程1 获取到锁");
-                Thread.sleep(5000);
+                Thread.sleep(3000);
                 distributeLock.zkUnLock();
                 System.out.println("线程1 释放锁");
             }
@@ -33,8 +34,21 @@ public class DistributeLockTest {
                 distributeLock2.init();
                 distributeLock2.zkLock();
                 System.out.println("线程2 获取到锁");
-                Thread.sleep(5000);
+                Thread.sleep(2000);
                 distributeLock2.zkUnLock();
+                System.out.println("线程2 释放锁");
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                distributeLock3.init();
+                distributeLock3.zkLock();
+                System.out.println("线程3 获取到锁");
+                Thread.sleep(1000);
+                distributeLock3.zkUnLock();
                 System.out.println("线程2 释放锁");
             }
         }).start();
